@@ -1,16 +1,18 @@
 import fs from "fs";
 import path from "path";
-const parser = require("@babel/parser");
-import astUtils from "ast"; //假引用
+import webpackNewOpt from "packages/core/src/utils/ast/webpackNewOpt";
+import ProtocolGeneratorAPI from "./ProtocolGeneratorAPI";
 
+const parser = require("@babel/parser");
 /**
  * 框架对构建工具协议
  * @param protocols 协议内容
  */
-class TemplateToBuildToolAPI {
-  protected protocols: Record<string, object>; // todo 类型考虑优化
+class TemplateToBuildToolAPI extends ProtocolGeneratorAPI {
+  protected declare protocols: Record<string, object>; // todo 类型考虑优化
 
   constructor(protocols) {
+    super(protocols);
     this.protocols = protocols;
   }
 
@@ -24,17 +26,23 @@ class TemplateToBuildToolAPI {
   //   ADD_CONFIG_OVERRIDE: "",  //根据框架，不同的打包工具需要不同的插件，有些是都需要用的，有些是框架独有的
   //   ADD_DEPENDENCIES:"",  //框架所需要的依赖，已有现成方法，可以直接调用
 
-  ENTRY_FILE_OVERRIDE(params) {
-    const srcDir = path.resolve(__dirname, "src"); // src 目录路径
-    const content = params.content;
+  //  入口文件这里我重新想了一下，之前的理解有误，
+  //  以为是咱们通过协议拿到各类参数最后组装。但是实际上已经有现成的模板文件了，这次升级就是用协议来替换其中逻辑判断的ejs代码。
+  //  所以框架相关的内容可以直接写到模板里，不用再用 ast 方法组装。这里也就不需要这个协议了
 
-    if (content) {
-      //对入口文件进行一些调制，这里具体细节还待讨论。
-      const entryFilePath = path.join(srcDir, "index.js"); // 假设入口文件为 index.js
-      let entryContent = fs.readFileSync(entryFilePath, "utf-8");
-      fs.writeFileSync(entryFilePath, entryContent, "utf-8");
-    }
-  }
+  // ENTRY_FILE_OVERRIDE(params) {
+  //   //这部分内容可以不用对
+
+  //   const srcDir = path.resolve(__dirname, "src"); // src 目录路径
+  //   const content = params.content;
+
+  //   if (content) {
+  //     //对入口文件进行一些调制，这里具体细节还待讨论。
+  //     const entryFilePath = path.join(srcDir, "index.js"); // 假设入口文件为 index.js
+  //     let entryContent = fs.readFileSync(entryFilePath, "utf-8");
+  //     fs.writeFileSync(entryFilePath, entryContent, "utf-8");
+  //   }
+  // }
   ADD_CONFIG_OVERRIDE(params) {
     const srcDir = path.resolve(__dirname, "src"); // src 目录路径
     const content = params.content;
@@ -52,15 +60,17 @@ class TemplateToBuildToolAPI {
         }); // 然后再进行一些其它ast操作
 
         //或者是这样
-        configFileContent = astUtils.webpackNewOpt(configFileContent);
+        configFileContent = webpackNewOpt(configFileContent);
         fs.writeFileSync(configFilePath, configFileContent, "utf-8");
+      } else if (buildToolName === "vite") {
+        //  ...
       }
     }
   }
   ADD_DEPENDENCIES(params) {
     const srcDir = path.resolve(__dirname, "src"); // src 目录路径
     const content = params.content;
-    //已有写好的extendPka协议，可以直接引用也可以二开。
+    //  extendPackage是拓展 package.json 的，还需要能在 webpack.config.js 或 vite.config.js里拓展的方法
   }
 }
 
