@@ -187,7 +187,7 @@ async function projectSelect() {
     options: specialPluginsMap[responses.template],
     required: false,
   })) as string[];
-  if (specialPlugins.includes(skip)) {
+  if (specialPlugins.includes(chalk.greenBright(skip))) {
     specialPlugins.length = 0;
   }
 
