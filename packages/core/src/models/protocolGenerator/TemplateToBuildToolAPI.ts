@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import webpackNewOpt from "packages/core/src/utils/ast/webpackNewOpt";
+import { webpackNewOpt, viteNewOpt, rollupNewOpt } from "packages/core/src/utils/ast/templateToBuildToolAstUtils";
 import ProtocolGeneratorAPI from "./ProtocolGeneratorAPI";
 
 const parser = require("@babel/parser");
@@ -49,28 +49,22 @@ class TemplateToBuildToolAPI extends ProtocolGeneratorAPI {
     let buildToolName = "webpack"; //以webpack为例，这里以后要写一个方法获取用户选中的构建工具
     if (content) {
       const configFilePath = path.join(srcDir, buildToolName + "config.js");
+      let configFileContent = fs.readFileSync(configFilePath, "utf-8");
       if (buildToolName === "webpack") {
-        let configFileContent = fs.readFileSync(configFilePath, "utf-8");
-        //  是直接将文件内容传进ast的方法呢？还是这里也要有一些ast的操作？
-        const ast = parser.parse(configFileContent, {
-          sourceType: "module", // 如果是 ES6 模块，设置为 'module'
-          plugins: [
-            // 可以根据需要添加其他插件
-          ],
-        }); // 然后再进行一些其它ast操作
-
-        //或者是这样
         configFileContent = webpackNewOpt(configFileContent);
-        fs.writeFileSync(configFilePath, configFileContent, "utf-8");
       } else if (buildToolName === "vite") {
-        //  ...
+        configFileContent = viteNewOpt(configFileContent);
+      } else if (buildToolName === "rollup") {
+        configFileContent = rollupNewOpt(configFileContent);
       }
+      fs.writeFileSync(configFilePath, configFileContent, "utf-8");
     }
   }
   ADD_DEPENDENCIES(params) {
     const srcDir = path.resolve(__dirname, "src"); // src 目录路径
     const content = params.content;
     //  extendPackage是拓展 package.json 的，还需要能在 webpack.config.js 或 vite.config.js里拓展的方法
+    
   }
 }
 

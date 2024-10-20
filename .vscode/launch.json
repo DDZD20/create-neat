@@ -12,7 +12,8 @@
       "runtimeArgs": ["myapp", "--dev"], // 命令行参数
       "skipFiles": ["<node_internals>/**"],
       "console": "integratedTerminal", // 使用集成终端
-      "type": "node"
+      "type": "node",
+      "stopOnEntry": true
     },
     // => `create-neat add eslint`
     {
