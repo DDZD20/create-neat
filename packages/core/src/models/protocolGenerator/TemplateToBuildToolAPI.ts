@@ -43,7 +43,7 @@ class TemplateToBuildToolAPI extends ProtocolGeneratorAPI {
   //     fs.writeFileSync(entryFilePath, entryContent, "utf-8");
   //   }
   // }
-  ADD_CONFIG_OVERRIDE(params) {
+  ADD_CONFIG(params) {
     const srcDir = path.resolve(__dirname, "src"); // src 目录路径
     const content = params.content;
     let buildToolName = "webpack"; //以webpack为例，这里以后要写一个方法获取用户选中的构建工具
