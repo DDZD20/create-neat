@@ -204,8 +204,13 @@ class Generator {
       `node_modules/${pluginName}-plugin-test-ljq`,
     );
 
+    const isHusky = pluginName === "husky";
     if (pluginGenerator && typeof pluginGenerator === "function") {
-      await pluginGenerator(this.generatorAPI, this.templateName);
+      if (isHusky) {
+        await pluginGenerator(this.generatorAPI, JSON.stringify(this.preset));
+      } else {
+        await pluginGenerator(this.generatorAPI, this.templateName);
+      }
     }
 
     const templatePath = resolve(
@@ -234,10 +239,6 @@ class Generator {
     if (templateGenerator && typeof templateGenerator === "function") {
       // 将框架需要的依赖加入到package.json中
       await templateGenerator(this.templateAPI);
-      // 如果框架需要对构建工具进行配置，借助于ast
-      await this.mergeBuildToolConfigByAst(
-        `packages/core/template/template-${this.templateName}/index.cjs`,
-      );
     }
   }
 
@@ -268,6 +269,7 @@ class Generator {
       framework: this.templateName,
       bundler: this.buildTool,
       language: "typescript" in this.plugins ? "typescript" : "javascript",
+      plugin: "scss" in this.preset.plugins ? "scss" : "",
       VueEjs: {
         useElementPlus: !!this.preset.plugins["element-plus"],
       },
@@ -287,17 +289,6 @@ class Generator {
       `./template-${this.buildTool}-script/generator/template`,
     );
     this.files.addToTreeByTemplateDirPath(buildToolScriptPath, this.rootDirectory);
-
-    // 为每个 plugin 创建 GeneratorAPI 实例，调用插件中的 generate
-    for (const pluginName of Object.keys(this.plugins)) {
-      await this.pluginGenerate(pluginName);
-    }
-
-    // 将框架需要的依赖添加到package.json中，以及如果该框架如果需要添加构建工具配置属性，则借助ast进行添加
-    await this.templateGenerate();
-
-    // 将构建工具需要的依赖添加到package.json中
-    await this.buildToolGenerator();
 
     // 根据选择的框架拉取模板进行渲染
     const templatePath = join(
@@ -322,7 +313,17 @@ class Generator {
     };
 
     this.files.addToTreeByTemplateDirPathAndEjs(templatePath, this.rootDirectory, options);
-    // new FileTree(templatePath).renderTemplates(this.rootDirectory, undefined, options);
+
+    // 为每个 plugin 创建 GeneratorAPI 实例，调用插件中的 generate
+    for (const pluginName of Object.keys(this.plugins)) {
+      await this.pluginGenerate(pluginName);
+    }
+
+    // 将框架需要的依赖添加到package.json中，以及如果该框架如果需要添加构建工具配置属性，则借助ast进行添加
+    await this.templateGenerate();
+
+    // 将构建工具需要的依赖添加到package.json中
+    await this.buildToolGenerator();
 
     // 与构建工具有关的配置全部添加完毕，生成构建工具配置文件
     const buildConfigFinalContent = generator(this.buildToolConfigAst).code;
@@ -413,6 +414,29 @@ class Generator {
    */
   getRootDirectory(): string {
     return this.rootDirectory;
+  }
+  /**
+   * 返回用户预设
+   * @returns
+   */
+  getPreset(): Preset {
+    return this.preset;
+  }
+
+  /**
+   * 返回生成器文件树 （文件树的构建是分步骤的，有时候拿到的不一定是最终的文件树）
+   * @returns
+   */
+  getFiles(): FileTree {
+    return this.files;
+  }
+
+  /**
+   * 返回生成器插件
+   * @returns
+   */
+  getPlugins(): Record<string, any> {
+    return this.plugins;
   }
 }
 
