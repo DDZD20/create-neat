@@ -23,7 +23,8 @@
     "dev": "tsc -w -p ./tsconfig.dev.json",
     "check": "npx tsc",
     "test": "vitest --reporter verbose",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage"
   },
   "files": [
     "dist/**/*",
@@ -66,6 +67,7 @@
     "@types/minimist": "^1.2.5",
     "@types/node": "^20.11.22",
     "@types/tar": "^6.1.11",
+    "@vitest/coverage-v8": "^1.2.1",
     "@vitest/ui": "^3.0.7",
     "vitest": "1.2.1"
   },
