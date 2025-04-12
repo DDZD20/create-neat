@@ -55,6 +55,38 @@
       ],
       "smartStep": true,
       "console": "integratedTerminal"
+    },
+    // => debug createSuccessInfo.test.ts
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug createSuccessInfo Tests",
+      "autoAttachChildProcesses": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "program": "${workspaceRoot}/node_modules/vitest/vitest.mjs",
+      "args": [
+        "run", 
+        "packages/core/src/__tests__/utils/createSuccessInfo.test.ts", 
+        "--reporter=verbose"
+      ],
+      "smartStep": true,
+      "console": "integratedTerminal"
+    },
+    // => debug getNpmSource.test.ts
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug getNpmSource Tests",
+      "autoAttachChildProcesses": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "program": "${workspaceRoot}/node_modules/vitest/vitest.mjs",
+      "args": [
+        "run", 
+        "packages/core/src/__tests__/utils/getNpmSource.test.ts", 
+        "--reporter=verbose"
+      ],
+      "smartStep": true,
+      "console": "integratedTerminal"
     }
   ]
 }
