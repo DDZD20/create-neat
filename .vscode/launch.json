@@ -87,6 +87,38 @@
       ],
       "smartStep": true,
       "console": "integratedTerminal"
+    },
+    // => debug dependenciesInstall.test.ts
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug dependenciesInstall Tests",
+      "autoAttachChildProcesses": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "program": "${workspaceRoot}/node_modules/vitest/vitest.mjs",
+      "args": [
+        "run", 
+        "packages/core/src/__tests__/utils/dependenciesInstall.test.ts", 
+        "--reporter=verbose"
+      ],
+      "smartStep": true,
+      "console": "integratedTerminal"
+    },
+    // => debug commonUtils.test.ts
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug commonUtils Tests",
+      "autoAttachChildProcesses": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "program": "${workspaceRoot}/node_modules/vitest/vitest.mjs",
+      "args": [
+        "run", 
+        "packages/core/src/__tests__/utils/commonUtils.test.ts", 
+        "--reporter=verbose"
+      ],
+      "smartStep": true,
+      "console": "integratedTerminal"
     }
   ]
 }
