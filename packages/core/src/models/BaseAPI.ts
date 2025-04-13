@@ -1,24 +1,24 @@
 import fs from "fs";
 import path from "path";
 
-import { Preset } from "../utils/preset";
-// import { saveSnapshot } from "../utils/test/snapshot";
+import { Preset } from "../utils/preset.js";
+import {
+  pluginToBuildToolProtocol,
+  pluginToTemplateProtocol,
+  templateToBuildToolProtocol,
+} from "../configs/protocol.js";
 
-import Generator from "./Generator";
-import PluginToTemplateAPI from "./protocolGenerator/PluginToTemplateAPI";
-import TemplateToBuildToolAPI from "./protocolGenerator/TemplateToBuildToolAPI";
-import FileTree from "./FileTree";
-
-const Protocols = require("../configs/protocol");
-
-const { pluginToTemplateProtocol, pluginToBuildToolProtocol, templateToBuildToolProtocol } =
-  Protocols;
+import Generator from "./Generator.js";
+import PluginToTemplateAPI from "./protocolGenerator/PluginToTemplateAPI.js";
+import TemplateToBuildToolAPI from "./protocolGenerator/TemplateToBuildToolAPI.js";
+import PluginToBuildToolAPI from "./protocolGenerator/PluginToBuildToolAPI.js";
+import FileTree from "./FileTree.js";
 
 interface ConfigFileData {
   file: Record<string, string[]>;
 }
 
-type ProtocolAPI = PluginToTemplateAPI | TemplateToBuildToolAPI /* | PluginToBuildToolAPI */;
+type ProtocolAPI = PluginToTemplateAPI | TemplateToBuildToolAPI | PluginToBuildToolAPI;
 
 /**
  * 传入协议的参数，不再对每个协议单独传参，而是统一挂载在API上
@@ -67,7 +67,7 @@ class BaseAPI {
         // saveSnapshot("PluginToTemplateAPI", { protocols, props, protocol });
         api = new PluginToTemplateAPI(protocols, props, protocol);
       } else if (protocol in pluginToBuildToolProtocol) {
-        // api = new PluginToBuildToolAPI(protocols);
+        api = new PluginToBuildToolAPI(protocols, props, protocol);
       } else if (protocol in templateToBuildToolProtocol) {
         // new SnapshotableTemplateToBuildToolAPI(protocols, props, protocol);
         api = new TemplateToBuildToolAPI(protocols, props, protocol);
