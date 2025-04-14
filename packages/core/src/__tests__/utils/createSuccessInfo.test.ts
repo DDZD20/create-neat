@@ -10,7 +10,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import boxen from "boxen";
 import chalk from "chalk";
 
-import createSuccessInfo from "../../utils/createSuccessInfo";
+import createSuccessInfo from "../../utils/createSuccessInfo.js";
 
 // 模拟依赖
 vi.mock("chalk", () => {

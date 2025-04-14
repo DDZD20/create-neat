@@ -6,7 +6,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach, Mock } from "vitest";
 import { execSync } from "child_process";
 
-import gitCheck from "../../utils/gitCheck";
+import gitCheck from "../../utils/gitCheck.js";
 
 vi.mock("child_process", () => ({
   execSync: vi.fn(),

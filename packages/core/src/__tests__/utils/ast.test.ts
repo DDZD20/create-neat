@@ -11,14 +11,14 @@
 import { describe, it, expect } from "vitest";
 import { stringLiteral, numericLiteral } from "@babel/types";
 
-import { transformCode } from "../../utils/ast/utils";
+import { transformCode } from "../../utils/ast/utils.js";
 import {
   createImportDeclaration,
   createNewExpression,
   createCallExpression,
   createObjectProperty,
   exportDefaultDeclarationUtils,
-} from "../../utils/ast/commonAst";
+} from "../../utils/ast/commonAst.js";
 
 describe("AST 通用工具测试", () => {
   describe("导入声明测试", () => {

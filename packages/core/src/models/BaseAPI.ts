@@ -64,7 +64,6 @@ class BaseAPI {
     // 此处会遍历调用的各个协议，并将 Generator 的数据（利如用户preset）传入协议处理器中去。
     for (const protocol in protocols) {
       if (protocol in pluginToTemplateProtocol) {
-        // saveSnapshot("PluginToTemplateAPI", { protocols, props, protocol });
         api = new PluginToTemplateAPI(protocols, props, protocol);
       } else if (protocol in pluginToBuildToolProtocol) {
         api = new PluginToBuildToolAPI(protocols, props, protocol);

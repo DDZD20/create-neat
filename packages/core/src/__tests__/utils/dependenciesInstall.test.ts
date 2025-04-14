@@ -11,7 +11,7 @@ import fs from "fs";
 import path from "path";
 import { spawn } from "cross-spawn";
 
-import dependenciesInstall from "../../utils/dependenciesInstall";
+import dependenciesInstall from "../../utils/dependenciesInstall.js";
 
 // 模拟fs、cross-spawn和chalk模块
 vi.mock("fs", () => ({
@@ -145,6 +145,17 @@ describe("dependenciesInstall 函数测试", () => {
     await dependenciesInstall(packageJsonFile, "npm");
     // 检查Windows下是否添加了.cmd后缀
     expect(spawn).toHaveBeenCalledWith("npm.cmd", expect.any(Array), expect.any(Object));
+  });
+
+  it("在Mac平台应该使用正确的命令", async () => {
+    // 模拟Mac平台
+    Object.defineProperty(process, "platform", {
+      value: "darwin",
+    });
+    const packageJsonFile = "/test/path";
+    await dependenciesInstall(packageJsonFile, "npm");
+    // 检查Mac下是否直接使用npm命令（不需要.cmd后缀）
+    expect(spawn).toHaveBeenCalledWith("npm", expect.any(Array), expect.any(Object));
   });
 
   it("处理没有依赖的情况", async () => {

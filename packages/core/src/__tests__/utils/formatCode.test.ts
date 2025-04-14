@@ -9,7 +9,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach, Mock } from "vitest";
 import prettier from "prettier";
 
-import formatCode from "../../utils/formatCode";
+import formatCode from "../../utils/formatCode.js";
 
 // 模拟prettier
 vi.mock("prettier", () => ({

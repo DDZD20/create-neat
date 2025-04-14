@@ -12,9 +12,9 @@ import { describe, it, expect, vi, beforeEach, Mock } from "vitest";
 import * as clackPrompts from "@clack/prompts";
 import { execSync } from "child_process";
 
-import { projectSelect } from "../../utils/select";
-import { savePresetToRcPath, loadRcOptions, getRcPath } from "../../utils/options";
-import { getPreset } from "../../utils/preset";
+import { projectSelect } from "../../utils/select.js";
+import { savePresetToRcPath, loadRcOptions, getRcPath } from "../../utils/options.js";
+import { getPreset } from "../../utils/preset.js";
 
 // 模拟依赖
 vi.mock("@clack/prompts", async () => ({

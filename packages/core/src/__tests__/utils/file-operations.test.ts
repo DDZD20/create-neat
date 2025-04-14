@@ -2,8 +2,8 @@ import { describe, test, expect, afterEach, beforeEach, vi } from "vitest";
 import fs from "fs-extra";
 import path from "path";
 
-import { createFiles, createReadmeString } from "../../utils/createFiles";
-import * as fileController from "../../utils/fileController";
+import { createFiles, createReadmeString } from "../../utils/createFiles.js";
+import * as fileController from "../../utils/fileController.js";
 
 // 测试用的临时目录
 const TEST_DIR = path.join(__dirname, "test-temp");

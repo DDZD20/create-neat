@@ -9,8 +9,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import https from "https";
 
-import { npmRegistries } from "../../configs/npmRegistries";
-import { getNpmSource } from "../../utils/getnpmSource";
+import { npmRegistries } from "../../configs/npmRegistries.js";
+import { getNpmSource } from "../../utils/getnpmSource.js";
 
 // 模拟https模块
 vi.mock("https", () => {

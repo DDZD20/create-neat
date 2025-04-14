@@ -8,8 +8,8 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
-import { getTargetFileData, replaceDynamicSlot } from "../../utils/commonUtils";
-import { FileData } from "../../models/FileTree";
+import { getTargetFileData, replaceDynamicSlot } from "../../utils/commonUtils.js";
+import { FileData } from "../../models/FileTree.js";
 
 describe("commonUtils 函数测试", () => {
   describe("getTargetFileData 函数测试", () => {

@@ -12,7 +12,7 @@ import getLatestVersion from "latest-version";
 import chalk from "chalk";
 import semver from "semver";
 
-import { checkVersion } from "../../utils/checkVersion";
+import { checkVersion } from "../../utils/checkVersion.js";
 
 // 先进行模块模拟，再导入具体模块
 vi.mock("latest-version", () => {

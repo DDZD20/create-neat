@@ -15,9 +15,9 @@ import fs from "fs";
 import path from "path";
 import { describe, test, expect, beforeEach, vi, type Mock } from "vitest";
 
-import generateBuildToolConfigFromEJS from "../../utils/generateBuildToolConfigFromEJS";
-import { Preset, getPreset, defaultPreset } from "../../utils/preset";
-import { savePresetToRcPath, loadRcOptions, getRcPath } from "../../utils/options";
+import generateBuildToolConfigFromEJS from "../../utils/generateBuildToolConfigFromEJS.js";
+import { Preset, getPreset, defaultPreset } from "../../utils/preset.js";
+import { savePresetToRcPath, loadRcOptions, getRcPath } from "../../utils/options.js";
 
 // 模拟fs模块
 vi.mock("fs", () => ({
