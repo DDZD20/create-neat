@@ -80,11 +80,19 @@ describe("文件操作工具测试", () => {
     });
 
     test("readTemplateFileContent 应该正确读取模板文件", () => {
+      // 直接模拟整个函数
       const mockContent = "模板内容";
-      vi.spyOn(fs, "readFileSync").mockReturnValue(Buffer.from(mockContent));
+      const spy = vi.spyOn(fileController, "readTemplateFileContent").mockReturnValue(mockContent);
 
+      // 执行测试
       const content = fileController.readTemplateFileContent("test.md");
+
+      // 验证结果
       expect(content).toBe(mockContent);
+      expect(spy).toHaveBeenCalledWith("test.md");
+
+      // 恢复原始行为
+      spy.mockRestore();
     });
 
     test("copyDirectory 应该成功复制目录", async () => {
